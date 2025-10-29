@@ -44,12 +44,13 @@ async def receive_webhook(request: Request):
     data = await request.json()
     print("Received:", data)
 
-    message = f"📩 New webhook received:\n```json\n{data}\n```"
-    asyncio.create_task(async_notify(message))
-
-    # Launch trade simulations concurrently
+        # Launch trade simulations concurrently
     asyncio.create_task(executeTradeonTradovate())
     asyncio.create_task(executeTradeonNinjaTrader())
     asyncio.create_task(executeTradeonEasyTrade())
+    message = f"📩 New webhook received:\n```json\n{data}\n```"
+    asyncio.create_task(async_notify(message))
+
+
 
     return {"status": "ok"}
