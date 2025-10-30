@@ -3,6 +3,7 @@ import requests
 import asyncio
 import os
 import random
+import json
 
 app = FastAPI()
 
@@ -27,14 +28,16 @@ async def receive_webhook(request: Request):
     print("Received:", data)
 
     # You can customize the message formatting here
-    message = f"📩 New webhook received:\n```json\n{data}\n```"
+    message = f"📩 New webhook received:\n```json\n{json.dumps(data, indent=2, ensure_ascii=False)}\n```"
 
-    # Send notification asynchronously
-    asyncio.create_task(async_notify(message))
+    # Send notification and run simulated trades before returning (serverless-safe)
+    await async_notify(message)
 
-    # Trigger simulated trade executions asynchronously
-    asyncio.create_task(executeTradeonTradovate(details=data))
-    asyncio.create_task(executeTradeonNinjaTrader(details=data))
+    # Trigger simulated trade executions and wait for completion
+    await asyncio.gather(
+        executeTradeonTradovate(details=data),
+        executeTradeonNinjaTrader(details=data),
+    )
 
     return {"status": "ok"}
 
