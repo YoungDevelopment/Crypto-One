@@ -50,13 +50,13 @@ async def async_notify(message: str):
 
 async def executeTradeonTradovate(details=None):
     """Simulate executing a trade on Tradovate and notify Discord."""
-    await asyncio.sleep(random.uniform(0.5, 2.5))
+    await asyncio.sleep(random.uniform(0.5, 5))
     message = "this is the TradeonTradovate function"
     await async_notify(message)
 
 
 async def executeTradeonNinjaTrader(details=None):
     """Simulate executing a trade on NinjaTrader and notify Discord."""
-    await asyncio.sleep(random.uniform(0.5, 2.5))
+    await asyncio.sleep(random.uniform(5, 10))
     message = "this is the TradeonNinjaTrader function"
     await async_notify(message)
