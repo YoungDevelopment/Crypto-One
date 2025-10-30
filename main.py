@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 import requests
 import asyncio
 import os
+import random
 
 app = FastAPI()
 
@@ -31,6 +32,10 @@ async def receive_webhook(request: Request):
     # Send notification asynchronously
     asyncio.create_task(async_notify(message))
 
+    # Trigger simulated trade executions asynchronously
+    asyncio.create_task(executeTradeonTradovate(details=data))
+    asyncio.create_task(executeTradeonNinjaTrader(details=data))
+
     return {"status": "ok"}
 
 
@@ -38,3 +43,17 @@ async def async_notify(message: str):
     """Async wrapper for Discord notification"""
     loop = asyncio.get_event_loop()
     await loop.run_in_executor(None, notify, message)
+
+
+async def executeTradeonTradovate(details=None):
+    """Simulate executing a trade on Tradovate and notify Discord."""
+    await asyncio.sleep(random.uniform(0.5, 2.5))
+    message = "this is the TradeonTradovate function"
+    await async_notify(message)
+
+
+async def executeTradeonNinjaTrader(details=None):
+    """Simulate executing a trade on NinjaTrader and notify Discord."""
+    await asyncio.sleep(random.uniform(0.5, 2.5))
+    message = "this is the TradeonNinjaTrader function"
+    await async_notify(message)
